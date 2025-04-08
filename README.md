@@ -37,4 +37,4 @@
 If the codes are helpful, plese cite the paper:
 
 [1] Wenlong Tian, Ying Ye, Xujiang Chao, Lehua Qi, Efficient generation of composite RVEs with densely packed
-particles: 33 lines of python code, submitted to Composites Science and Technology, 2025.
+particles, submitted to XXXX, 2025.
