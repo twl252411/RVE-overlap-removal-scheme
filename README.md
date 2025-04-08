@@ -1,4 +1,4 @@
-# RVE-overlap-removal-scheme-33lines
+# RVE-overlap-removal-scheme
 
 ## Method
 
