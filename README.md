@@ -55,6 +55,16 @@ Adjust the parameters at the top of the script as needed:
 - `tolerance`: convergence threshold (scaled with `inc_size`).
 
 ### Usage
+
+```bash
+python "overlap removal scheme_numba_optimized.py"
+```
+
+### Output
+
+- The console prints the iteration number and potential (every 20 steps or on convergence).
+- Results are written to `points{dim}d.txt`, containing particle centers and periodic images.
+
 ## overlap removal scheme_numba_optimized 程序
 
 `overlap removal scheme_numba_optimized.py` 是基于 numba 加速的重叠消除实现，适合在较大粒子数下快速迭代收敛。
@@ -83,10 +93,6 @@ Adjust the parameters at the top of the script as needed:
 python "overlap removal scheme_numba_optimized.py"
 ```
 
-### Output
-
-- The console prints the iteration number and potential (every 20 steps or on convergence).
-- Results are written to `points{dim}d.txt`, containing particle centers and periodic images.
 ### 输出
 
 - 控制台打印迭代步数与当前势能（每 20 步或收敛时）。
