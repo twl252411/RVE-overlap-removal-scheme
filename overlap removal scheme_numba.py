@@ -1,6 +1,6 @@
 import time, numpy as np
 from scipy.spatial import cKDTree
-from numba import njit, prange
+from numba import njit
 
 # =========================== Parameters =============================
 dim = 3  # 2D or 3D case
@@ -12,13 +12,22 @@ alpha, tolerance = 1.0, (inc_size * 1.e-3) ** 2  # Step size for gradient descen
 # =========================== Initialization =========================
 points = np.random.rand(inc_num, dim) * rve_size
 
+def query_pairs(tree, inc_size):
+    try:
+        return tree.query_pairs(r=inc_size, output_type="ndarray")
+    except TypeError:
+        raw_pairs = list(tree.query_pairs(r=inc_size))
+        return np.array(raw_pairs, dtype=np.int64).reshape(-1, 2) if raw_pairs else np.empty((0, 2), dtype=np.int64)
+
+
 # =========================== Numba function =========================
-@njit(parallel=True)
-def compute_gradients_and_potential(points, pairs, rve_size, inc_size):
+@njit
+def compute_gradients_and_potential(points, pairs, rve_size, inc_size, gradients):
 
-    gradients, potentials = np.zeros_like(points), np.zeros(pairs.shape[0])
+    gradients[:] = 0.0
+    potential = 0.0
 
-    for k in prange(pairs.shape[0]):
+    for k in range(pairs.shape[0]):
         p1, p2 = pairs[k]
         delta = points[p1] - points[p2]
         for d in range(points.shape[1]):
@@ -27,26 +36,34 @@ def compute_gradients_and_potential(points, pairs, rve_size, inc_size):
 
         psi_ij = inc_size - norm
         if psi_ij > 0.0:
-            potentials[k] = 0.5 * psi_ij**2
+            potential += 0.5 * psi_ij**2
             grad = - psi_ij * delta / norm
             for d in range(points.shape[1]):
                 gradients[p1, d] += grad[d]
                 gradients[p2, d] -= grad[d]
-                
-    return gradients, np.sum(potentials)
+
+    return potential
+
 
 # Trigger compilation
-_ = compute_gradients_and_potential(np.zeros((1, dim)), np.empty((0, 2), dtype=np.int64), np.ones(dim), 1.0)
+_ = compute_gradients_and_potential(
+    np.zeros((1, dim)),
+    np.empty((0, 2), dtype=np.int64),
+    np.ones(dim),
+    1.0,
+    np.zeros((1, dim)),
+)
 
 # =========================== Main loop ==============================
 # start_time = time.time()
 
+gradients = np.zeros_like(points)
+
 for iter_num in range(int(1e5)):
 
     tree = cKDTree(points, boxsize=rve_size)
-    raw_pairs = list(tree.query_pairs(r=inc_size))
-    pairs = np.array(raw_pairs, dtype=np.int64).reshape(-1, 2) if raw_pairs else np.empty((0, 2), dtype=np.int64)
-    gradients, potential = compute_gradients_and_potential(points, pairs, rve_size, inc_size)
+    pairs = query_pairs(tree, inc_size)
+    potential = compute_gradients_and_potential(points, pairs, rve_size, inc_size, gradients)
 
     if iter_num % 20 == 0 or potential < tolerance: print(f"Iteration {iter_num}: Potential = {potential:.6f}")
     if potential < tolerance: break
