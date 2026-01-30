@@ -4,10 +4,10 @@ from numba import njit
 
 # =========================== Parameters =============================
 dim = 3  # 2D or 3D case
-rve_size, inc_size, inc_vf, inc_enlg = np.ones([dim]) * 100.0, 20.0, 0.60, 1.00  # rve_size, particle diameter, volume fraction, enlargement factor
+rve_size, inc_size, inc_vf, inc_enlg = np.ones([dim]) * 100.0, 20.0, 0.55, 1.025  # rve_size, particle diameter, volume fraction, enlargement factor
 inc_num = int(np.ceil(np.prod(rve_size) * inc_vf / (np.pi * inc_size**dim / (2.0 * dim))))  # number of inclusions
 inc_size *= inc_enlg  # Enlarged particle size
-alpha, tolerance = 0.4, (inc_size * 1.0e-3) ** 2  # Step size for gradient descent, convergence tolerance
+alpha, tolerance = 0.4, (inc_size * 1.0e-4) ** 2  # Step size for gradient descent, convergence tolerance
 seed = 0  # Reproducibility seed
 norm_eps = 1.0e-12  # Prevent divide-by-zero when particles coincide
 
