@@ -4,10 +4,10 @@ from numba import njit
 
 # =========================== Parameters =============================
 dim = 3  # 2D or 3D case
-rve_size, inc_size, inc_vf, inc_enlg = np.ones([dim])*200.0, 20., 0.50, 1.01   # rve_size, particle diameter, volume fraction, enlargement factor
+rve_size, inc_size, inc_vf, inc_enlg = np.ones([dim])*100.0, 20., 0.60, 1.00   # rve_size, particle diameter, volume fraction, enlargement factor
 inc_num = int(np.ceil(np.prod(rve_size) * inc_vf / (np.pi * inc_size**dim / (2.*dim))))  # number of inclusions
 inc_size *= inc_enlg  # Enlarged particle size
-alpha, tolerance = 1.0, (inc_size * 1.e-3) ** 2  # Step size for gradient descent, convergence tolerance
+alpha, tolerance = 0.4, (inc_size * 1.e-3) ** 2  # Step size for gradient descent, convergence tolerance
 
 # =========================== Initialization =========================
 points = np.random.rand(inc_num, dim) * rve_size
@@ -55,7 +55,7 @@ _ = compute_gradients_and_potential(
 )
 
 # =========================== Main loop ==============================
-# start_time = time.time()
+start_time = time.time()
 
 gradients = np.zeros_like(points)
 
@@ -78,4 +78,4 @@ all_points = images[mask]
 
 # =========================== Save results ============================
 np.savetxt(f"points{dim}d.txt", all_points)
-# print(f"Execution time: {time.time() - start_time:.6f} seconds")
+print(f"Execution time: {time.time() - start_time:.6f} seconds")
