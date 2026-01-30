@@ -32,6 +32,29 @@
  
 (7). Output: The centers of the particles.
 
+## overlap removal scheme_numba_optimized program
+
+`overlap removal scheme_numba_optimized.py` is a numba-accelerated overlap removal implementation intended to converge quickly for larger particle counts.
+
+### Dependencies
+
+- NumPy
+- SciPy (`scipy.spatial.cKDTree`)
+- Numba
+
+### Key parameters
+
+Adjust the parameters at the top of the script as needed:
+
+- `dim`: dimension (2D or 3D).
+- `rve_size`: RVE size (length in each direction).
+- `inc_size`: particle diameter (scaled by `inc_enlg`).
+- `inc_vf`: volume fraction.
+- `inc_enlg`: particle enlargement factor (used for initialization).
+- `alpha`: gradient descent step size.
+- `tolerance`: convergence threshold (scaled with `inc_size`).
+
+### Usage
 ## overlap removal scheme_numba_optimized 程序
 
 `overlap removal scheme_numba_optimized.py` 是基于 numba 加速的重叠消除实现，适合在较大粒子数下快速迭代收敛。
@@ -60,6 +83,10 @@
 python "overlap removal scheme_numba_optimized.py"
 ```
 
+### Output
+
+- The console prints the iteration number and potential (every 20 steps or on convergence).
+- Results are written to `points{dim}d.txt`, containing particle centers and periodic images.
 ### 输出
 
 - 控制台打印迭代步数与当前势能（每 20 步或收敛时）。
