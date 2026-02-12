@@ -102,4 +102,4 @@ python "overlap removal scheme_numba_optimized.py"
 
 If the codes are helpful, plese cite the paper:
 
-[1] Wenlong Tian, Ying Ye, Xujiang Chao, Lehua Qi, Efficient generation of composite RVEs with densely packed particles, submitted to Mechanics of Materials, 2025.
+[1] Wenlong Tian, Ying Ye, Ruiying Zhang, Xujiang Chao, Lehua Qi, Efficient generation of composite RVEs with densely packed random particles, Mechanics of Materials, 2026 (216): 105643. 
