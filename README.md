@@ -1,4 +1,4 @@
-# RVE-overlap-removal-scheme
+# Efficient generation of composite RVEs with densely packed random particles
 
 ## Method
 
